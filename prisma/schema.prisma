@@ -1,0 +1,121 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  //  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Book {
+  id               String     @id @default(uuid())
+  isbn             String?    @unique
+  title            String
+  page_count       Int
+  description      String
+  author           Author     @relation(fields: [author_id], references: [id])
+  author_id        String
+  publisher        Publisher  @relation(fields: [publisher_id], references: [id])
+  publisher_id     String
+  category         Category   @relation(fields: [category_id], references: [id])
+  category_id      String
+  source_book_id   String?
+  cover_image_url  String?
+  language         String?
+  dimension_height Float?
+  dimension_width  Float?
+  dimension_depth  Float?
+  weight           Float?
+  printed_num      Int?
+  edition          String?
+  ebook_link       String?
+  buy_link         String?
+  is_sold_out      Boolean    @default(false)
+  is_visible       Boolean    @default(false)
+  published_at     DateTime   @db.Timestamptz(3)
+  book_tags        BookTags[]
+  created_at       DateTime   @default(now()) @db.Timestamptz(3)
+  updated_at       DateTime   @default(now()) @updatedAt @db.Timestamptz(3)
+}
+
+model UserRole {
+  id            String   @id @default(uuid())
+  name          String   @unique
+  created_at    DateTime @default(now()) @db.Timestamptz(3)
+  updated_at    DateTime @default(now()) @updatedAt @db.Timestamptz(3)
+  granted_users Users[]
+}
+
+model Tags {
+  id           String     @id @default(uuid())
+  name         String
+  tagged_books BookTags[]
+  created_at   DateTime   @default(now()) @db.Timestamptz(3)
+  updated_at   DateTime   @default(now()) @updatedAt @db.Timestamptz(3)
+}
+
+model BookTags {
+  tags    Tags   @relation(fields: [tags_id], references: [id])
+  tags_id String
+  books   Book   @relation(fields: [book_id], references: [id])
+  book_id String
+
+  @@id([tags_id, book_id])
+}
+
+model Publisher {
+  id              String   @id @default(uuid())
+  name            String
+  address         String?
+  website_link    String?  @unique
+  email           String   @unique
+  phone           String?  @unique
+  pic_name        String?
+  pic_phone       String?  @unique
+  logo            String?
+  created_at      DateTime @default(now()) @db.Timestamptz(3)
+  updated_at      DateTime @default(now()) @updatedAt @db.Timestamptz(3)
+  published_books Book[]
+  employees       Users[]
+}
+
+model Author {
+  id            String   @id @default(uuid())
+  name          String
+  bio           String
+  nationality   String
+  created_at    DateTime @default(now()) @db.Timestamptz(3)
+  updated_at    DateTime @default(now()) @updatedAt @db.Timestamptz(3)
+  written_books Book[]
+}
+
+model Category {
+  id                String   @id @default(uuid())
+  name              String
+  description       String?
+  slug              String   @unique
+  created_at        DateTime @default(now()) @db.Timestamptz(3)
+  updated_at        DateTime @default(now()) @updatedAt @db.Timestamptz(3)
+  categorized_books Book[]
+}
+
+model Users {
+  id           String     @id @default(uuid())
+  name         String
+  email        String     @unique
+  phone        String     @unique
+  is_active    Boolean    @default(true)
+  role         UserRole   @relation(fields: [role_id], references: [id])
+  role_id      String
+  publisher    Publisher? @relation(fields: [publisher_id], references: [id])
+  publisher_id String?
+  created_at   DateTime   @default(now()) @db.Timestamptz(3)
+  updated_at   DateTime   @default(now()) @updatedAt @db.Timestamptz(3)
+}
