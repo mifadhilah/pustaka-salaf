@@ -1,4 +1,4 @@
-export default function authenticationHandler(req, res, next) {
+module.exports = function authenticationHandler(req, res, next) {
   // const authHeader = req.headers['authorization'];
   // const token = authHeader && authHeader.split(' ')[1];
 
