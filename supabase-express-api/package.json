@@ -1,0 +1,42 @@
+{
+  "name": "pustaka-salaf",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "concurrently \"npm run dev:next\" \"npm run dev:server\"",
+    "dev:server": "nodemon ./prisma-express-api/server.js",
+    "dev:client": "next dev --turbopack ./client",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "supabase-dev": "nodemon ./supabase-express-api/server.js"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.50.0",
+    "dotenv": "^16.5.0",
+    "express": "^5.1.0",
+    "joi": "^17.13.3",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "next": "15.3.4"
+  },
+  "devDependencies": {
+    "typescript": "^5",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "@tailwindcss/postcss": "^4",
+    "tailwindcss": "^4",
+    "eslint": "^9",
+    "eslint-config-next": "15.3.4",
+    "@eslint/eslintrc": "^3",
+    "@prisma/client": "^6.10.1",
+    "nodemon": "^3.1.10",
+    "prisma": "^6.10.1",
+    "supabase": "^2.26.9"
+  },
+  "author": "Salman Studio",
+  "license": "UNLICENSED"
+}
